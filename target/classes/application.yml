@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+spring:
+  profiles:
+    active: centro_comercial1
+  output:
+    ansi:
+      enabled: always
+---
+spring:
+  config:
+    activate:
+      on-profile: centro_comercial1
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ''
+    url: jdbc:mysql://localhost:3306/centro_comercial1?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrival=true
+    username: root
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+    show-sql: true
+---
+spring:
+  config:
+    activate:
+      on-profile: centro_comercial2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ''
+    url: jdbc:mysql://localhost:3306/centro_comercial2?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrival=true
+    username: root
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+    show-sql: true
+---
