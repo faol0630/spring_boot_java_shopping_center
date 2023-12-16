@@ -1,5 +1,9 @@
 package com.faol.locals.Controller;
 
+import com.faol.locals.Controller.dto.LocalDTO;
+import com.faol.locals.Controller.dto.LocalDTOToLocal;
+import com.faol.locals.Controller.dto.LocaltoLocalDTO;
+import com.faol.locals.Entities.Address;
 import com.faol.locals.Entities.Local;
 import com.faol.locals.Exceptions.Exception.BadRequestException;
 import com.faol.locals.Service.LocalServiceInt;
@@ -14,19 +18,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class LocalController {
 
     @Autowired
     LocalServiceInt service;
 
-    @GetMapping
-    public ResponseEntity<List<Local>> findAll() {
+    @GetMapping("/")
+    public ResponseEntity<List<?>> findAll() {
 
         List<Local> verify = service.findAll();
         if (!(verify.size() == 0)) {
-            return new ResponseEntity<>(verify, HttpStatus.OK);
+
+            List<LocalDTO> localDTOList = verify.stream().map( local -> {
+
+                Address address = new Address();
+                address.setStreet(local.getAddress().getStreet());
+                address.setNumber(local.getAddress().getNumber());
+                address.setCity(local.getAddress().getCity());
+
+                return LocalDTO.builder()
+                        .floor(local.getFloor())
+                        .code(local.getCode())
+                        .local_id(local.getLocal_id())
+                        .name(local.getName())
+                        .transactionList(local.getTransactionList())
+                        .customerList(local.getCustomerList())
+                        .address(address)
+                        .build();
+            }).toList();
+
+            return new ResponseEntity<>(localDTOList, HttpStatus.OK);
         } else {
 
             String errorMessage = "Empty list (faol)";
@@ -43,7 +67,11 @@ public class LocalController {
         Optional<Local> verify = service.findById(local_id);
         if (verify.isPresent()){
 
-            return new ResponseEntity<>(verify, HttpStatus.OK);
+            Local local = verify.get();
+            LocalDTO localDTO = LocaltoLocalDTO.localToLocalDTO(local);
+
+            return new ResponseEntity<>(localDTO, HttpStatus.OK);
+
         } else{
 
             response.put("Message faol", "Local with id ".concat(local_id.toString()).concat(" not founded"));
@@ -61,7 +89,11 @@ public class LocalController {
         Optional<Local> verify = service.findByName(name);
 
         if (verify.isPresent()) {
-            return new ResponseEntity<>(verify, HttpStatus.OK);
+
+            Local local = verify.get();
+            LocalDTO localDTO = LocaltoLocalDTO.localToLocalDTO(local);
+            return new ResponseEntity<>(localDTO, HttpStatus.OK);
+
         } else {
             response.put("Message", "Local with name ".concat(name).concat(" not founded"));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -75,7 +107,10 @@ public class LocalController {
 
         Optional<Local> verify = service.findByNameIgnoreCase(name);
         if (verify.isPresent()) {
-            return new ResponseEntity<>(verify, HttpStatus.OK);
+
+            Local local = verify.get();
+            LocalDTO localDTO = LocaltoLocalDTO.localToLocalDTO(local);
+            return new ResponseEntity<>(localDTO, HttpStatus.OK);
         } else {
             response.put("Message", "Local with name ".concat(name).concat(" not founded"));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -83,19 +118,20 @@ public class LocalController {
     }
 
     @PostMapping("/add/")
-    public ResponseEntity<?> addNewLocal(@Valid @RequestBody Local local) {
+    public ResponseEntity<?> addNewLocal(@Valid @RequestBody LocalDTO localDTO) {
 
-        if (local.getName().isEmpty() || local.getName() == null){
+        if (localDTO.getName().isEmpty() || localDTO.getName() == null){
             throw new BadRequestException("Invalid name");
 
         }
-        if (local.getFloor().isEmpty() || local.getFloor() == null){
+        if (localDTO.getFloor().isEmpty() || localDTO.getFloor() == null){
             throw new BadRequestException("Invalid floor");
         }
-        if (local.getCode().isEmpty() || local.getCode() == null){
+        if (localDTO.getCode().isEmpty() || localDTO.getCode() == null){
             throw new BadRequestException("Invalid code");
 
         }
+        Local local = LocalDTOToLocal.localDTOToLocal(localDTO);
         service.saveNewLocal(local);
         return new ResponseEntity<>("Local created", HttpStatus.CREATED);
 
@@ -110,7 +146,8 @@ public class LocalController {
 
         if (verify.isPresent()) {
             Local update = service.editLocal(local_id, local);
-            return new ResponseEntity<>(update, HttpStatus.OK);
+            LocalDTO localDTO = LocaltoLocalDTO.localToLocalDTO(update);
+            return new ResponseEntity<>(localDTO, HttpStatus.OK);
         } else {
             response.put("Message faol", "Local with id ".concat(local_id.toString()).concat(" not founded"));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

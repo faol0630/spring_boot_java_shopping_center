@@ -1,5 +1,6 @@
 package com.faol.locals.Service;
 
+import com.faol.locals.Entities.Address;
 import com.faol.locals.Entities.Local;
 import com.faol.locals.Repository.LocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,22 @@ public class LocalServiceImpl implements LocalServiceInt{
             newLocal.setCode(local.getCode());
 
         }
+
+        Address address = new Address();
+
+        if (Objects.nonNull(local.getAddress().getCity()) && !"".equalsIgnoreCase(local.getAddress().getCity())){
+            address.setCity(local.getAddress().getCity());
+
+        }
+        if (Objects.nonNull(local.getAddress().getNumber()) && !"".equalsIgnoreCase(local.getAddress().getNumber())){
+            address.setNumber(local.getAddress().getNumber());
+
+        }
+        if (Objects.nonNull(local.getAddress().getStreet()) && !"".equalsIgnoreCase(local.getAddress().getStreet())){
+            address.setStreet(local.getAddress().getStreet());
+
+        }
+        newLocal.setAddress(address);
 
         return repo.save(newLocal);
     }
