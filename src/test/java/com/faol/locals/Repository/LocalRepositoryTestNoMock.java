@@ -41,7 +41,6 @@ public class LocalRepositoryTestNoMock {
                     .floor("3")
                     .code("78659")
                     .address(address1)
-                    .owner(owner1)
                     .build();
 
 
@@ -83,7 +82,6 @@ public class LocalRepositoryTestNoMock {
                     .owner_lastname("Perez")
                     .build();
 
-            result.setOwner(owner1);
 
             Address addressNew = Address.builder()
                     .city("Sevilla")
@@ -118,9 +116,7 @@ public class LocalRepositoryTestNoMock {
                     "Floor : " + local.getFloor() + " / " +
                     "City : " + local.getAddress().getCity() + " / " +
                     "Street : " + local.getAddress().getStreet() + " / " +
-                    "Number : " + local.getAddress().getNumber() + " / " +
-                    "Owner name : " + local.getOwner().getOwner_name() + " / " +
-                    "Owner lastname : " + local.getOwner().getOwner_lastname() + " / "
+                    "Number : " + local.getAddress().getNumber() + " / "
             ));
             System.out.println();
         }
@@ -140,9 +136,7 @@ public class LocalRepositoryTestNoMock {
                             "Floor : " + local.getFloor() + " / " +
                             "City : " + local.getAddress().getCity() + " / " +
                             "Street : " + local.getAddress().getStreet() + " / " +
-                            "Number : " + local.getAddress().getNumber() + " / " +
-                            "Owner name : " + local.getOwner().getOwner_name() + " / " +
-                            "Owner lastname : " + local.getOwner().getOwner_lastname() + " / "
+                            "Number : " + local.getAddress().getNumber() + " / "
             ));
             System.out.println();
         }
@@ -211,7 +205,6 @@ public class LocalRepositoryTestNoMock {
                     .floor("3")
                     .code("18342")
                     .address(address1)
-                    .owner(owner1)
                     //.transactionList(List.of(transaction1, transaction2, transaction3))
                     .build();
 
@@ -267,8 +260,6 @@ public class LocalRepositoryTestNoMock {
                         "City : " + local.getAddress().getCity() + " / " +
                         "Street : " + local.getAddress().getStreet() + " / " +
                         "Number : " + local.getAddress().getNumber() + " / " +
-                        "Owner name : " + local.getOwner().getOwner_name() + " / " +
-                        "Owner lastname : " + local.getOwner().getOwner_lastname() + " / " +
                         "Transactions size : " + local.getTransactionList().size() + " / "
 
         ));
@@ -309,7 +300,6 @@ public class LocalRepositoryTestNoMock {
                     .floor("5")
                     .code("86759")
                     .address(address1)
-                    .owner(owner1)
                     .customerList(customerList)
                     .build();
 
@@ -337,8 +327,6 @@ public class LocalRepositoryTestNoMock {
                         "City : " + local.getAddress().getCity() + " / " +
                         "Street : " + local.getAddress().getStreet() + " / " +
                         "Number : " + local.getAddress().getNumber() + " / " +
-                        "Owner name : " + local.getOwner().getOwner_name() + " / " +
-                        "Owner lastname : " + local.getOwner().getOwner_lastname() + " / " +
                         "Customer list : " + local.getCustomerList() + " / "
 
         ));

@@ -38,7 +38,6 @@ class TransactionRepositoryTest {
                     .name("Ropa")
                     .floor("7")
                     .code("67567")
-                    .owner(owner1)
                     .address(address1)
                     .build();
 

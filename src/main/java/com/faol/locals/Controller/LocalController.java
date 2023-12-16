@@ -33,7 +33,7 @@ public class LocalController {
         if (!(verify.size() == 0)) {
 
             List<LocalDTO> localDTOList = verify.stream().map( local -> {
-
+                //Aca dentro usar el metodo LocalToLocalDTO
                 Address address = new Address();
                 address.setStreet(local.getAddress().getStreet());
                 address.setNumber(local.getAddress().getNumber());

@@ -84,6 +84,7 @@ public class Local {
             name = "local_id",
             referencedColumnName = "local_id"
     )
+    @JsonIgnore
     private List<Transaction> transactionList;
 
 
@@ -103,6 +104,7 @@ public class Local {
                     referencedColumnName = "customer_id"
             )
     )
+    @JsonIgnore
     private List<Customer> customerList;
 
 }
